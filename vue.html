@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Vue Task App</title>
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	 crossorigin="anonymous">
+
+	<link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+	<div id="app">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="col-md-6 col-md-offset-3">
+						<img src="img/Vue.js_Logo.svg.png" width="25%" alt="Vue Logo" class="img-responsive center-block">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="col-md-6">
+						<div class="row">
+							<h3>All Tasks</h1>
+							<ul class="list-group">
+								<li v-for="task in tasks" v-text="task.description" class="list-group-item"></li>
+							</ul>
+						</div>
+						<div class="row">
+							
+								<div class="form-group">
+									<label for="addNew">Add New Task</label>
+									<input type="text" class="form-control" id="addNew" name="addNew" v-model="newTask">
+								</div>
+
+								<button @click="addNewTask" class="btn btn-success">Submit</button>
+							
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-12">
+								<h3>Complete Tasks</h1>
+								<ul class="list-group">
+									<li v-for="task in completeTasks" v-text="task.description" class="list-group-item"></li>
+								</ul>
+								<h3>Incomplete Tasks</h1>
+									<table class="table table-responsive">
+										<tbody>
+											<tr v-for="task in incompleteTasks">
+												<td v-text="task.description"></td>
+												<td><button @click="completeTask(task)" v-if="!task.completed" class="btn btn-success">Complete</button></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://unpkg.com/vue"></script>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				tasks: [
+					{ description: 'Make Dinner', completed: true },
+					{ description: 'Call at five', completed: true },
+					{ description: 'Screenshare with USA at 6', completed: false },
+					{ description: 'Pick kids up from school', completed: false },
+					{ description: 'Book MOT', completed: false },
+					{ description: 'Relax', completed: true },
+				],
+				newTask: ''
+
+			},
+			methods: {
+				addNewTask: function () {
+					this.tasks.push({ description: this.newTask, completed: false });
+					this.newTask = '';
+				},
+				completeTask: function (task) {
+					task.completed = true;
+					console.log('Switched');
+				}
+			},
+
+			computed: {
+				incompleteTasks() {
+					return this.tasks.filter(task => !task.completed);
+				},
+				completeTasks() {
+					return this.tasks.filter(task => task.completed);
+				}
+			}
+
+		})
+	</script>
+</body>
+
+</html>
